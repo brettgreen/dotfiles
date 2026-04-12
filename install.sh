@@ -11,6 +11,6 @@ brew install --cask font-jetbrains-mono
 
 echo "Linking dotfiles with stow..."
 cd "$(dirname "$0")"
-stow -v zsh ghostty zellij
+stow -v zsh ghostty zellij git
 
 echo "Done! Open Ghostty to get started."
