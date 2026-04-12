@@ -103,6 +103,12 @@ source $ZSH/oh-my-zsh.sh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# Project shortcuts
+export WEBSITE="$HOME/Git/website"
+export CV="$HOME/Git/website/cv/CV_current.tex"
+alias website="cd \$WEBSITE"
+alias editcv="open \$CV"
+
 # Auto-start Zellij in Ghostty
 if [[ "$TERM_PROGRAM" == "ghostty" && -z "$ZELLIJ" ]]; then
     zellij attach --create default
