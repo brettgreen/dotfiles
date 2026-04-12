@@ -1,5 +1,5 @@
 theme "catppuccin-mocha"
-default_layout "compact"
+default_layout "split"
 pane_frames false
 simplified_ui true
 copy_on_select true
