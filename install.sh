@@ -14,7 +14,7 @@ brew install --cask cursor
 
 echo "Linking dotfiles with stow..."
 cd "$DOTFILES"
-stow -v zsh ghostty zellij git
+stow -v zsh ghostty zellij git claude
 
 # Cursor / VS Code settings (can't use stow — path has spaces)
 echo "Linking Cursor settings..."
