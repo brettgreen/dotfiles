@@ -1,0 +1,152 @@
+% ============================================================
+% paper-to-lecture — Beamer Preamble Template
+% ============================================================
+% Auto-generated from config.yml. Placeholders (%%VAR%%) are
+% replaced by the orchestrator before writing to workspace.
+%
+% To customize manually:
+%   1. Change RGB values in the color definitions
+%   2. Update COURSE_NAME and WEEK_LABEL in footer
+%   3. Keep ALL spacing fixes — they prevent overflow issues
+% ============================================================
+
+\documentclass[aspectratio=169,11pt]{beamer}
+
+\usetheme{Madrid}
+\usecolortheme{default}
+
+% --- Theme Colors (auto-filled from config) ---
+\definecolor{ThemeRed}{RGB}{%%PRIMARY_RGB%%}       % Primary accent
+\definecolor{ThemeBlue}{RGB}{%%ACCENT_RGB%%}       % Secondary accent
+\definecolor{ThemeGreen}{RGB}{%%GREEN_RGB%%}        % Success/mechanism
+\definecolor{ThemeGray}{RGB}{%%GRAY_RGB%%}          % Neutral text
+\definecolor{LightGray}{RGB}{245,245,245}           % Background fills
+
+\setbeamercolor{structure}{fg=ThemeRed}
+\setbeamercolor{frametitle}{fg=white,bg=ThemeRed}
+\setbeamercolor{title}{fg=white,bg=ThemeRed}
+\setbeamercolor{block title}{bg=ThemeRed,fg=white}
+\setbeamercolor{block body}{bg=LightGray,fg=black}
+\setbeamercolor{item}{fg=ThemeRed}
+\setbeamercolor{subitem}{fg=ThemeRed!80}
+\setbeamercolor{itemize item}{fg=ThemeRed}
+\setbeamercolor{enumerate item}{fg=ThemeRed}
+
+% --- Packages ---
+\usepackage{amsmath,amssymb,amsthm}
+\usepackage{mathtools}
+\usepackage{tikz}
+\usetikzlibrary{shapes,arrows,positioning,calc,decorations.pathreplacing,trees,matrix,arrows.meta,patterns}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{xcolor}
+
+% --- TikZ Standard Styles ---
+% P29: No transform shape. Minimum font = \small.
+\tikzset{
+  mseBox/.style={draw,thick,rounded corners,align=center,font=\small,inner sep=2pt},
+  mseArrow/.style={->,thick,>=stealth},
+  mseEdgeLabel/.style={font=\small,inner sep=1pt,align=center},  % PTL-014: no fill=white; use separate \node at explicit coords
+  mseLegend/.style={draw,thick,rounded corners,fill=white,fill opacity=1,text opacity=1,inner sep=2pt,font=\small,align=left},
+}
+
+% --- Interactive Boxes (Socratic pedagogy) ---
+\newcommand{\think}[1]{%
+  \par\vspace{3pt}\noindent\centering
+  \fcolorbox{ThemeRed}{LightGray}{\parbox{0.85\textwidth}{%
+    \textcolor{ThemeRed}{\textbf{Think First:}} #1}}\par\vspace{3pt}%
+}
+
+\newcommand{\keyinsight}[1]{%
+  \par\vspace{3pt}\noindent\centering
+  \fcolorbox{ThemeBlue}{white}{\parbox{0.85\textwidth}{%
+    \textcolor{ThemeBlue}{\textbf{Key Insight:}} #1}}\par\vspace{3pt}%
+}
+
+\newcommand{\warning}[1]{%
+  \par\vspace{3pt}\noindent\centering
+  \fcolorbox{ThemeRed!70}{white}{\parbox{0.85\textwidth}{%
+    \textcolor{ThemeRed!70}{\textbf{Warning:}} #1}}\par\vspace{3pt}%
+}
+
+\newcommand{\mechanism}[1]{%
+  \par\vspace{3pt}\noindent\centering
+  \fcolorbox{ThemeGreen}{white}{\parbox{0.85\textwidth}{%
+    \textcolor{ThemeGreen}{\textbf{Mechanism:}} #1}}\par\vspace{3pt}%
+}
+
+\newcommand{\checkpoint}[1]{%
+  \par\vspace{3pt}\noindent\centering
+  \fcolorbox{ThemeGray}{LightGray}{\parbox{0.85\textwidth}{%
+    \textcolor{ThemeGray}{\textbf{Checkpoint:}} #1}}\par\vspace{3pt}%
+}
+
+% --- Embedded Paper Figure (for empirical papers) ---
+% Convenience macro: embeds a figure with attribution and keyinsight.
+% Usage: \paperfigure{page=N, trim=L B R T, clip, width=0.85\textwidth}{material/paper.pdf}{Source: Author (Year), Figure N}{Interpretation text}
+\newcommand{\paperfigure}[4]{%
+  % #1 = includegraphics options (page=N, trim=..., clip, width=...)
+  % #2 = PDF path (relative to compilation dir, e.g., material/paper.pdf)
+  % #3 = caption/attribution text
+  % #4 = keyinsight text
+  \begin{center}
+    \includegraphics[#1]{#2}\\[2pt]
+    {\small\textcolor{ThemeGray}{#3}}
+  \end{center}
+  \keyinsight{#4}%
+}
+
+\newtheorem{proposition}{Proposition}
+\newtheorem{remark}{Remark}
+
+\setbeamertemplate{navigation symbols}{}
+
+% --- Global Vertical-Space Savings (DO NOT REMOVE) ---
+% These prevent the most common beamer overflow issues.
+\addtobeamertemplate{frametitle}{}{\vspace{-6pt}}
+\setlength{\itemsep}{2pt plus 1pt minus 1pt}
+\setlength{\parskip}{2pt plus 1pt minus 1pt}
+\setbeamertemplate{itemize/enumerate body begin}{\setlength{\itemsep}{2pt plus 1pt minus 1pt}}
+\setbeamertemplate{itemize/enumerate subbody begin}{\setlength{\itemsep}{1pt plus 1pt minus 1pt}}
+\addtobeamertemplate{block begin}{}{\vspace{-4pt}}
+\addtobeamertemplate{block end}{\vspace{-4pt}}{}
+\AtBeginDocument{%
+  \setlength{\abovedisplayskip}{6pt plus 2pt minus 2pt}%
+  \setlength{\belowdisplayskip}{6pt plus 2pt minus 2pt}%
+  \setlength{\abovedisplayshortskip}{2pt plus 1pt}%
+  \setlength{\belowdisplayshortskip}{4pt plus 1pt minus 1pt}%
+}
+
+% --- Footer ---
+\setbeamertemplate{footline}{%
+  \leavevmode%
+  \hbox{%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{author in head/foot}%
+    \usebeamerfont{author in head/foot}%%COURSE_NAME%%
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,center]{title in head/foot}%
+    \usebeamerfont{title in head/foot}%%WEEK_LABEL%%
+  \end{beamercolorbox}%
+  \begin{beamercolorbox}[wd=.333333\paperwidth,ht=2.25ex,dp=1ex,right]{date in head/foot}%
+    \usebeamerfont{date in head/foot}\insertframenumber{} / \inserttotalframenumber\hspace*{2ex}
+  \end{beamercolorbox}}%
+  \vskip0pt%
+}
+
+% ============================================================
+% BEGIN DOCUMENT
+% ============================================================
+\begin{document}
+
+\title{%%LECTURE_TITLE%%}
+\subtitle{%%WEEK_LABEL%%: %%TOPIC%%}
+\author{%%AUTHOR%%}
+\institute{%%INSTITUTION%%}
+\date{%%DATE%%}
+
+\begin{frame}
+  \titlepage
+\end{frame}
+
+% --- Slide content goes below (or \input{act1.tex} etc.) ---

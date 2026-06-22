@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Trade-Map · D1 — Lit Equity Plains</title>
+
+<link rel="stylesheet" href="node_modules/reveal.js/dist/reveal.css">
+
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,600;1,400&family=DM+Sans:opsz,wght@9..40,300;9..40,400;9..40,500&display=swap" rel="stylesheet">
+
+<script>
+MathJax = { tex: { inlineMath: [['$','$'], ['\\(','\\)']], displayMath: [['$$','$$']] } };
+</script>
+<script src="https://cdn.jsdelivr.net/npm/mathjax@3/es5/tex-chtml.js" async></script>
+
+<style>
+:root {
+  --white:#ffffff; --off:#f8f7f5; --light:#f0eeeb; --border:#e2dfd9;
+  --muted:#9b9690; --text:#1a1916; --accent:#007C92;
+  --cardinal:#8C1515; --cardinal-soft:#f7eeee; --cardinal-line:#d8b9b9; --cardinal-muted:#a43a32;
+  --c-mm:#4caf6e; --c-retail:#9b6fd4; --c-algo:#e07ab0; --c-bond:#007C92; --c-liq:#e62600;
+  --c-d1:#1f6feb;
+  --serif:'Playfair Display', Georgia, serif;
+  --sans:'DM Sans', -apple-system, system-ui, sans-serif;
+}
+*, *::before, *::after { box-sizing: border-box; margin:0; padding:0; }
+html, body { height:100%; background:var(--white); }
+.reveal { font-family:var(--sans); font-size:26px; font-weight:300; color:var(--text); background:var(--white); }
+.reveal .slides { text-align:left; }
+.reveal .slides section { top:0!important; height:100%!important; padding:40px 56px 32px!important; display:flex!important; flex-direction:column!important; background:var(--white); overflow:hidden!important; }
+.reveal h1 { font-family:var(--serif); font-size:2.4em; font-weight:600; line-height:1.2; letter-spacing:-0.01em; color:var(--text); margin-bottom:0.3em; }
+.reveal h2 { font-family:var(--serif); font-size:1.5em; font-weight:600; line-height:1.25; letter-spacing:-0.01em; color:var(--text); margin-bottom:0.4em; position:relative; padding-bottom:0.18em; }
+.reveal h2::after { content:''; display:block; width:42px; height:2px; background:var(--cardinal); border-radius:2px; margin-top:0.3em; opacity:0.9; }
+.reveal h3 { font-family:var(--serif); font-size:1.05em; font-weight:400; font-style:italic; color:var(--muted); margin-bottom:0.7em; border-left:2px solid var(--cardinal-line); padding-left:10px; }
+.reveal p, .reveal li { font-family:var(--sans); font-weight:300; font-size:0.95em; line-height:1.55; color:var(--text); }
+.reveal ul { list-style:none; padding-left:0; }
+.reveal ul li::before { content:'—'; color:var(--muted); margin-right:0.5em; }
+.reveal ul li { margin-bottom:0.25em; }
+.reveal strong { font-weight:500; }
+.reveal em { font-style:italic; }
+.rule { width:44px; height:2px; background:var(--cardinal); border-radius:2px; margin:0 0 1em; }
+.thin-rule { width:100%; height:1px; background:linear-gradient(90deg, var(--cardinal-line), var(--border) 34%, var(--border)); margin:0.7em 0; }
+.note { font-size:0.85em; color:var(--muted); font-style:italic; margin-top:0.3em; }
+.label-sm { font-family:var(--sans); font-size:0.85em; font-weight:500; letter-spacing:0.08em; text-transform:uppercase; color:var(--muted); }
+.label-sm::before { content:''; display:inline-block; width:6px; height:6px; margin-right:7px; border-radius:50%; background:var(--cardinal); vertical-align:0.08em; opacity:0.82; }
+.two-col { display:grid; grid-template-columns:1fr 1fr; gap:24px; flex:1; min-height:0; }
+.three-col { display:grid; grid-template-columns:1fr 1fr 1fr; gap:16px; flex:1; min-height:0; }
+.col { display:flex; flex-direction:column; }
+.fig-area { flex:1 1 0; min-height:0; min-width:0; display:flex; align-items:center; justify-content:center; overflow:hidden; }
+.fig-area svg { width:100%; height:100%; max-width:100%; max-height:100%; }
+.slide-center { justify-content:center!important; align-items:center!important; }
+.slide-title { justify-content:space-between; padding:56px 72px 48px; }
+.slide-title::before { content:''; position:absolute; top:0; left:72px; width:92px; height:4px; background:var(--cardinal); border-radius:0 0 3px 3px; }
+.slide-title h1 { max-width:100%; font-size:2.2em; line-height:1.18; letter-spacing:-0.02em; }
+.slide-title h1 em { font-style:italic; color:var(--cardinal); }
+.slide-title h1 span { color:var(--c-d1)!important; }
+.slide-title .subtitle { font-family:var(--serif); font-weight:400; font-style:italic; font-size:1.1em; color:var(--muted); margin-top:0.4em; }
+.slide-title .author-row { font-family:var(--sans); font-size:0.85em; font-weight:300; color:#000; }
+.slide-title .author-row strong { font-weight:500; }
+.slide-title .date-line { font-family:var(--sans); font-size:0.7em; font-weight:400; color:var(--muted); letter-spacing:0.06em; text-transform:uppercase; margin-top:8px; }
+.schema-card { background:var(--off); border:1px solid var(--border); border-top:2px solid var(--cardinal-line); border-radius:12px; padding:16px 20px; flex:1; min-height:0; }
+.schema-card h4 { font-family:var(--serif); font-weight:600; font-size:0.98em; margin-bottom:0.6em; color:var(--text); }
+.callout { background:#e8f5f7; border:1px solid #a8d4db; border-top:2px solid var(--cardinal-line); border-radius:10px; padding:11px 16px; font-size:0.9em; color:#004d5c; margin-top:0.7em; }
+.callout strong { font-weight:500; }
+.callout-warn { background:#fff4e6; border:1px solid #f0c890; border-top:2px solid var(--cardinal-line); border-radius:10px; padding:11px 16px; font-size:0.9em; color:#6b3f00; margin-top:0.7em; }
+.callout-think { background:#f5edff; border:2px dashed var(--c-retail); border-top-color:var(--cardinal); border-radius:10px; padding:12px 18px; font-size:0.95em; color:#4a2680; margin:0.5em 0; }
+.callout-think .think-label { font-family:var(--sans); font-weight:500; font-size:0.75em; letter-spacing:0.1em; text-transform:uppercase; color:var(--cardinal); margin-bottom:0.3em; }
+.reveal table { width:100%; border-collapse:collapse; font-family:var(--sans); font-size:0.88em; font-weight:300; }
+.reveal table thead tr { border-bottom:1.5px solid var(--cardinal); }
+.reveal table th { font-weight:500; text-align:left; padding:6px 10px 6px 0; font-size:0.82em; letter-spacing:0.02em; color:var(--text); }
+.reveal table td { padding:5px 10px 5px 0; border-bottom:1px solid var(--border); vertical-align:top; line-height:1.4; }
+.chip { display:inline-block; padding:2px 9px; border:1px solid transparent; border-radius:99px; font-size:0.7em; font-weight:500; margin-right:3px; letter-spacing:0.02em; font-family:var(--sans); }
+.chip-hft  { background:#e7f0fe; color:#0b3d91; }
+.chip-mm   { background:#e7f8ed; color:#1a6634; }
+.chip-alpha{ background:#f5f3ff; color:#5b2d8e; }
+.chip-algo { background:#fff3eb; color:#a04a00; }
+.chip-auc  { background:#fff7d6; color:#7a5a00; }
+.math-box { background:var(--off); border-left:3px solid var(--cardinal); border-radius:0 10px 10px 0; padding:11px 18px; margin:0.5em 0; }
+.math-box .mlabel { font-family:var(--sans); font-size:0.66em; font-weight:500; letter-spacing:0.09em; text-transform:uppercase; color:var(--cardinal); margin-bottom:0.3em; }
+.bigtext { font-family:var(--serif); font-size:1.7em; font-weight:600; line-height:1.3; color:var(--text); text-align:center; margin:auto; padding:0 30px; }
+.bigtext em { font-style:italic; color:var(--cardinal); }
+.bigstat { display:flex; flex-direction:column; align-items:center; }
+.bigstat .num { font-family:var(--serif); font-size:2.6em; color:var(--c-d1); font-weight:600; line-height:1; }
+.bigstat .label { font-family:var(--sans); font-size:0.7em; color:var(--muted); text-transform:uppercase; letter-spacing:1.6px; margin-top:6px; }
+.pos { color:#1a6634; font-weight:500; }
+.neg { color:#8e1a1a; font-weight:500; }
+.reveal .progress { height:2px; color:var(--c-d1); }
+.reveal .controls { color:var(--muted); }
+.reveal .slide-number { font-family:var(--sans); font-size:0.62em; color:var(--muted); background:transparent; bottom:14px; right:24px; }
+.return-link { position:fixed; top:16px; left:16px; font-family:var(--sans); font-size:11px; color:var(--muted); text-decoration:none; letter-spacing:1.2px; text-transform:uppercase; z-index:1000; }
+.return-link:hover { color:var(--cardinal); }
+.city-banner { display:flex; align-items:center; gap:14px; padding:6px 0; border-bottom:1px solid var(--border); margin-bottom:14px; }
+.city-banner .city-id { font-family:var(--serif); font-size:1.6em; font-weight:600; color:var(--c-d1); }
+.city-banner .city-name { font-family:var(--serif); font-size:1.2em; font-weight:500; color:var(--text); }
+.city-banner .city-pos { margin-left:auto; font-family:var(--sans); font-size:0.7em; color:var(--muted); letter-spacing:1.4px; text-transform:uppercase; }
+</style>
+</head>
+<body>
+
+<a class="return-link" href="../index.html">← back to map</a>
+
+<div class="reveal">
+<div class="slides">
+
+<!-- =================== TITLE =================== -->
+<section class="slide-title" data-id="title">
+  <div style="display:flex; justify-content:space-between; align-items:flex-start;">
+    <div class="label-sm" style="font-size:0.7em;">Trade-Map · The Trading Continent</div>
+    <div class="label-sm" style="font-size:0.7em; color:var(--c-d1);">District 1 of 12</div>
+  </div>
+
+  <div style="flex:1; display:flex; flex-direction:column; justify-content:center; padding:32px 0;">
+    <h1 style="max-width:900px;"><span>Lit Equity Plains</span></h1>
+    <div class="subtitle" style="font-size:1.16em; max-width:850px;">The sunlit terrain where every order book is public — and five businesses live in it.</div>
+    <div class="rule" style="margin-top:1.55em; margin-bottom:1.15em;"></div>
+    <div style="font-family:var(--sans); font-size:0.95em; line-height:1.5;">
+      <strong>5 cities</strong> · <strong>~30 slides</strong> · <strong>5 trade routes leaving the district</strong>
+    </div>
+  </div>
+
+  <div class="date-line">Trading Class · 2026</div>
+</section>
+
+<!-- =================== HOOK =================== -->
+<section data-id="hook">
+  <h2>You click "buy 100 AAPL." What happens next?</h2>
+
+  <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:24px; min-height:0;">
+    <svg viewBox="0 0 1100 280" style="width:100%; max-height:300px;">
+      <defs>
+        <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="var(--muted)"/>
+        </marker>
+      </defs>
+
+      <line x1="60" y1="140" x2="1040" y2="140" stroke="var(--border)" stroke-width="6" stroke-linecap="round"/>
+      <line x1="60" y1="140" x2="1040" y2="140" stroke="var(--muted)" stroke-width="2" marker-end="url(#arr)"/>
+
+      <g class="fragment fade-in" data-fragment-index="1">
+        <circle cx="100" cy="140" r="11" fill="var(--c-d1)"/>
+        <text x="100" y="190" text-anchor="middle" font-family="Playfair Display" font-size="22" font-weight="600">click</text>
+        <text x="100" y="216" text-anchor="middle" font-size="13" fill="var(--muted)">your phone</text>
+        <text x="100" y="106" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="700" letter-spacing="1" fill="var(--c-d1)">0 ms</text>
+      </g>
+
+      <g class="fragment fade-in" data-fragment-index="2">
+        <circle cx="290" cy="140" r="11" fill="var(--c-retail)"/>
+        <text x="290" y="190" text-anchor="middle" font-family="Playfair Display" font-size="22" font-weight="600">broker</text>
+        <text x="290" y="216" text-anchor="middle" font-size="13" fill="var(--muted)">routing decision</text>
+        <text x="290" y="106" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="700" letter-spacing="1" fill="var(--c-retail)">~50 ms</text>
+      </g>
+
+      <g class="fragment fade-in" data-fragment-index="3">
+        <circle cx="490" cy="140" r="11" fill="var(--c-mm)"/>
+        <text x="490" y="190" text-anchor="middle" font-family="Playfair Display" font-size="22" font-weight="600">venue</text>
+        <text x="490" y="216" text-anchor="middle" font-size="13" fill="var(--muted)">lit / dark / wholesaler</text>
+        <text x="490" y="106" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="700" letter-spacing="1" fill="var(--c-mm)">~150 ms</text>
+      </g>
+
+      <g class="fragment fade-in" data-fragment-index="4">
+        <circle cx="690" cy="140" r="11" fill="var(--c-bond)"/>
+        <text x="690" y="190" text-anchor="middle" font-family="Playfair Display" font-size="22" font-weight="600">match</text>
+        <text x="690" y="216" text-anchor="middle" font-size="13" fill="var(--muted)">price-time priority</text>
+        <text x="690" y="106" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="700" letter-spacing="1" fill="var(--c-bond)">~200 ms</text>
+      </g>
+
+      <g class="fragment fade-in" data-fragment-index="5">
+        <circle cx="890" cy="140" r="11" fill="var(--cardinal)"/>
+        <text x="890" y="190" text-anchor="middle" font-family="Playfair Display" font-size="22" font-weight="600">clearing</text>
+        <text x="890" y="216" text-anchor="middle" font-size="13" fill="var(--muted)">DTCC / NSCC</text>
+        <text x="890" y="106" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="700" letter-spacing="1" fill="var(--cardinal)">~250 ms</text>
+      </g>
+    </svg>
+
+    <div class="fragment fade-in" data-fragment-index="6" style="font-family:var(--serif); font-size:1.22em; line-height:1.32; color:var(--text); max-width:960px; border-top:1px solid var(--border); padding-top:18px;">
+      Each stop is a business. <em>None of them works for free.</em>
+    </div>
+  </div>
+</section>
+
+<!-- =================== NEWS HOOK =================== -->
+<section data-id="news-hook">
+  <h2>Market making is one of the main businesses</h2>
+  <h3>The news hook</h3>
+
+  <div style="flex:1; display:grid; grid-template-columns:0.95fr 1.25fr; gap:34px; align-items:center; min-height:0;">
+    <div class="fragment fade-in" data-fragment-index="1" style="display:flex; flex-direction:column; justify-content:center;">
+      <div class="label-sm" style="color:var(--cardinal);">Jane Street</div>
+      <div style="font-family:var(--serif); font-size:4.9em; font-weight:600; line-height:0.95; margin-top:0.08em;">$39.6B</div>
+      <div style="font-family:var(--serif); font-size:1em; font-style:italic; color:var(--muted); margin-top:0.45em;">2025 net trading revenue · Q4 alone: $15.5B</div>
+      <div class="thin-rule" style="margin:1.1em 0 0.9em;"></div>
+      <div class="note" style="font-size:0.82em;">Source: Reuters / Bloomberg, April 2026.</div>
+    </div>
+
+    <div class="fragment fade-in" data-fragment-index="2" style="display:flex; flex-direction:column; gap:14px;">
+      <div class="label-sm">2025 trading revenue, billions USD</div>
+      <div style="display:grid; grid-template-columns:170px 1fr 72px; align-items:center; gap:12px; font-size:0.86em;">
+        <div style="font-weight:500;">Jane Street</div>
+        <div style="height:24px; background:var(--cardinal); border-radius:4px;"></div>
+        <div style="font-family:var(--serif); font-weight:600; text-align:right;">$39.6B</div>
+
+        <div style="font-weight:500;">JPMorgan trading</div>
+        <div style="height:24px; width:90%; background:#b95d55; border-radius:4px;"></div>
+        <div style="font-family:var(--serif); font-weight:600; text-align:right;">$35.8B</div>
+
+        <div style="font-weight:500;">Citadel Securities</div>
+        <div style="height:24px; width:31%; background:#6aa8b4; border-radius:4px;"></div>
+        <div style="font-family:var(--serif); font-weight:600; text-align:right;">~$12.2B</div>
+
+        <div style="font-weight:500;">HRT</div>
+        <div style="height:24px; width:31%; background:var(--accent); border-radius:4px;"></div>
+        <div style="font-family:var(--serif); font-weight:600; text-align:right;">~$12.3B</div>
+
+        <div style="font-weight:500;">Virtu</div>
+        <div style="height:24px; width:9%; background:#7a8c92; border-radius:4px;"></div>
+        <div style="font-family:var(--serif); font-weight:600; text-align:right;">~$3.8B</div>
+      </div>
+    </div>
+  </div>
+
+  <div class="callout fragment fade-in" data-fragment-index="3" style="margin-top:18px; text-align:center;">
+    <strong>Five firms.</strong> Five different businesses inside what looks like one industry.
+  </div>
+</section>
+
+<!-- =================== ACADEMIC QUESTION =================== -->
+<section data-id="academic-q">
+  <h2>What lives in District 1?</h2>
+  <h3>The five businesses inside the lit equity market</h3>
+
+  <div style="font-family:var(--serif); font-size:1.1em; font-style:italic; color:var(--text); max-width:940px; margin-bottom:18px;">
+    They share an order book. They have nothing else in common.
+  </div>
+
+  <div style="flex:1; display:grid; grid-template-columns:repeat(5, 1fr); gap:14px; align-items:stretch; min-height:0;">
+    <div class="fragment fade-in" data-fragment-index="1" class="schema-card" style="background:var(--off); border:1px solid var(--border); border-top:3px solid var(--c-d1); border-radius:8px; padding:18px 14px; display:flex; flex-direction:column;">
+      <div class="label-sm" style="color:var(--c-d1); font-size:0.7em;">1.1</div>
+      <div style="font-family:var(--serif); font-size:1.14em; font-weight:600; margin-top:6px; line-height:1.15;">HFT</div>
+      <div style="font-size:0.78em; color:var(--muted); margin-top:8px; line-height:1.35;">Sub-millisecond MM. Wins on latency.</div>
+    </div>
+    <div class="fragment fade-in" data-fragment-index="2" class="schema-card" style="background:var(--off); border:1px solid var(--border); border-top:3px solid var(--c-d1); border-radius:8px; padding:18px 14px; display:flex; flex-direction:column;">
+      <div class="label-sm" style="color:var(--c-d1); font-size:0.7em;">1.2</div>
+      <div style="font-family:var(--serif); font-size:1.14em; font-weight:600; margin-top:6px; line-height:1.15;">Mid-freq MM</div>
+      <div style="font-size:0.78em; color:var(--muted); margin-top:8px; line-height:1.35;">Quotes ms-by-ms. Adverse selection binds.</div>
+    </div>
+    <div class="fragment fade-in" data-fragment-index="3" class="schema-card" style="background:var(--off); border:1px solid var(--border); border-top:3px solid var(--c-d1); border-radius:8px; padding:18px 14px; display:flex; flex-direction:column;">
+      <div class="label-sm" style="color:var(--c-d1); font-size:0.7em;">1.3</div>
+      <div style="font-family:var(--serif); font-size:1.14em; font-weight:600; margin-top:6px; line-height:1.15;">Stock alpha</div>
+      <div style="font-size:0.78em; color:var(--muted); margin-top:8px; line-height:1.35;">Directional view. Hardest to do.</div>
+    </div>
+    <div class="fragment fade-in" data-fragment-index="4" class="schema-card" style="background:var(--off); border:1px solid var(--border); border-top:3px solid var(--c-d1); border-radius:8px; padding:18px 14px; display:flex; flex-direction:column;">
+      <div class="label-sm" style="color:var(--c-d1); font-size:0.7em;">1.4</div>
+      <div style="font-family:var(--serif); font-size:1.14em; font-weight:600; margin-top:6px; line-height:1.15;">Algo execution</div>
+      <div style="font-size:0.78em; color:var(--muted); margin-top:8px; line-height:1.35;">Slice an institutional order across venues.</div>
+    </div>
+    <div class="fragment fade-in" data-fragment-index="5" class="schema-card" style="background:linear-gradient(180deg, var(--cardinal-soft), var(--off)); border:1px solid var(--cardinal-line); border-top:4px solid var(--cardinal); border-radius:8px; padding:18px 14px; display:flex; flex-direction:column;">
+      <div class="label-sm" style="color:var(--cardinal); font-size:0.7em;">1.5</div>
+      <div style="font-family:var(--serif); font-size:1.14em; font-weight:600; margin-top:6px; color:var(--cardinal); line-height:1.15;">Closing auction</div>
+      <div style="font-size:0.78em; color:#6b1a1a; margin-top:8px; line-height:1.35;">10–15% of US volume. One price at 4 PM.</div>
+    </div>
+  </div>
+
+  <div class="callout-think fragment fade-in" data-fragment-index="6" style="margin-top:20px;">
+    <div class="think-label">Think first — pause 30 seconds</div>
+    <span style="font-style:italic;">Five businesses, one order book. Pick one — what does its operating model look like?</span>
+  </div>
+</section>
+
+<!-- =================== CITY 1.1 HFT — COLD OPEN =================== -->
+<section data-id="hft-cold">
+  <div class="city-banner">
+    <span class="city-id">1.1</span>
+    <span class="city-name">HFT — sub-millisecond market making</span>
+    <span class="city-pos">City 1 of 5 · D1</span>
+  </div>
+  <h2>The fastest residents of the continent</h2>
+  <h3>Cold open: a queue, a colocation rack, a microsecond</h3>
+
+  <div class="fig-area">
+    <svg viewBox="0 0 1100 380">
+      <defs>
+        <linearGradient id="rackGrad" x1="0" y1="0" x2="0" y2="1">
+          <stop offset="0%" stop-color="#374151"/>
+          <stop offset="100%" stop-color="#111827"/>
+        </linearGradient>
+      </defs>
+
+      <!-- Colo rack -->
+      <rect x="40" y="60" width="220" height="280" rx="10" fill="url(#rackGrad)"/>
+      <text x="150" y="42" text-anchor="middle" font-family="DM Sans" font-size="13" font-weight="700" letter-spacing="1.4" fill="var(--c-d1)">NYSE COLOCATION</text>
+      <g font-family="DM Sans" font-size="11" fill="#9ca3af">
+        <rect x="60" y="80" width="180" height="32" rx="3" fill="#1f2937"/><text x="150" y="100" text-anchor="middle" fill="#fbbf24">SERVER · YOUR RACK</text>
+        <rect x="60" y="120" width="180" height="32" rx="3" fill="#1f2937"/><text x="150" y="140" text-anchor="middle">competitor A</text>
+        <rect x="60" y="160" width="180" height="32" rx="3" fill="#1f2937"/><text x="150" y="180" text-anchor="middle">competitor B</text>
+        <rect x="60" y="200" width="180" height="32" rx="3" fill="#1f2937"/><text x="150" y="220" text-anchor="middle">competitor C</text>
+        <text x="150" y="262" text-anchor="middle" font-size="10">~$25k/mo · &lt;5µs to matching engine</text>
+      </g>
+
+      <!-- Queue diagram -->
+      <text x="630" y="42" text-anchor="middle" font-family="DM Sans" font-size="13" font-weight="700" letter-spacing="1.4" fill="var(--c-d1)">QUEUE AT $200.10 BID</text>
+      <g font-family="DM Sans">
+        <rect x="320" y="60" width="50" height="40" rx="3" fill="#dbeafe" stroke="#1f6feb" stroke-width="1.5"/>
+        <text x="345" y="85" text-anchor="middle" font-size="11" font-weight="700" fill="#1f6feb">#1</text>
+        <rect x="375" y="60" width="50" height="40" rx="3" fill="#dbeafe" stroke="#1f6feb" stroke-width="1.5"/>
+        <text x="400" y="85" text-anchor="middle" font-size="11" font-weight="700" fill="#1f6feb">#2</text>
+        <text x="450" y="84" font-size="13" fill="var(--muted)">…</text>
+        <rect x="490" y="60" width="50" height="40" rx="3" fill="#fef3c7" stroke="#f59e0b" stroke-width="2"/>
+        <text x="515" y="78" text-anchor="middle" font-size="9" font-weight="700" fill="#92400e">YOU</text>
+        <text x="515" y="93" text-anchor="middle" font-size="11" font-weight="700" fill="#92400e">#12</text>
+        <text x="565" y="84" font-size="13" fill="var(--muted)">…</text>
+        <rect x="600" y="60" width="50" height="40" rx="3" fill="#dbeafe" stroke="#1f6feb" stroke-width="1.5"/>
+        <text x="625" y="85" text-anchor="middle" font-size="11" font-weight="700" fill="#1f6feb">#50</text>
+
+        <text x="485" y="135" text-anchor="middle" font-size="13" fill="var(--text)">price-time priority — 50 orders ahead at the same price</text>
+        <text x="485" y="158" text-anchor="middle" font-size="13" font-style="italic" fill="var(--muted)">your fill = aggressor reaches share #12,000</text>
+      </g>
+
+      <!-- The clock -->
+      <g transform="translate(770,120)" font-family="DM Sans">
+        <circle r="76" fill="var(--off)" stroke="var(--cardinal)" stroke-width="2"/>
+        <text y="-12" text-anchor="middle" font-family="Playfair Display" font-size="34" font-weight="600" fill="var(--cardinal)">100µs</text>
+        <text y="22" text-anchor="middle" font-size="11" fill="var(--muted)">your reaction</text>
+        <text y="40" text-anchor="middle" font-size="11" fill="var(--muted)">to public news</text>
+      </g>
+
+      <text x="950" y="80" text-anchor="middle" font-family="Playfair Display" font-size="20" font-weight="600" fill="var(--text)">vs.</text>
+      <text x="950" y="105" text-anchor="middle" font-size="13" fill="var(--muted)">human trader</text>
+      <text x="950" y="160" text-anchor="middle" font-family="Playfair Display" font-size="36" font-weight="600" fill="var(--cardinal)">400ms</text>
+      <text x="950" y="184" text-anchor="middle" font-size="11" fill="var(--muted)">→ 4,000× slower</text>
+
+      <text x="550" y="245" text-anchor="middle" font-family="Playfair Display" font-size="22" font-style="italic" font-weight="400" fill="var(--text)">The franchise: be 100µs faster than the slow MM next door.</text>
+      <text x="550" y="285" text-anchor="middle" font-size="14" fill="var(--muted)">Adverse selection on a $0.001 fee — millions of times per day.</text>
+    </svg>
+  </div>
+</section>
+
+<!-- =================== HFT — UNIT ECONOMICS =================== -->
+<section data-id="hft-econ">
+  <h2>HFT economics — a millionth of a cent, billions of times</h2>
+  <h3>Sub-cent margin × scale</h3>
+
+  <div style="flex:1; display:grid; grid-template-columns:1.2fr 1fr; gap:30px; align-items:center; min-height:0;">
+    <div>
+      <div class="math-box">
+        <div class="mlabel">latency arb · per stock per day</div>
+        <div style="font-family:var(--serif); font-size:1.1em;">10,000 arbs × 1,000 shares × $0.01 ≈ <strong>$100,000/day</strong></div>
+      </div>
+      <div class="math-box">
+        <div class="mlabel">rebate capture · industry-wide</div>
+        <div style="font-family:var(--serif); font-size:1.1em;">1B shares/day × $0.001 rebate ≈ <strong>$1M/day</strong></div>
+      </div>
+      <div class="math-box">
+        <div class="mlabel">queue tax</div>
+        <div style="font-family:var(--serif); font-size:1.1em;">Reg NMS 2024 cut tick → queue = inventory</div>
+      </div>
+      <div class="callout-warn" style="margin-top:14px;">
+        <strong>Risk:</strong> tech outage = a missed event = a year of P&amp;L. Outage drills are weekly.
+      </div>
+    </div>
+
+    <div class="fig-area">
+      <svg viewBox="0 0 460 360">
+        <text x="230" y="22" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="700" letter-spacing="1.4" fill="var(--c-d1)">REVENUE WATERFALL · per day</text>
+        <!-- bars -->
+        <g font-family="DM Sans" font-size="12">
+          <rect x="40" y="60" width="180" height="34" fill="#bfdbfe"/>
+          <text x="230" y="82" font-size="14" font-weight="500">latency arb &nbsp; <tspan font-weight="600" fill="#1f6feb">+$100k</tspan></text>
+
+          <rect x="40" y="110" width="380" height="34" fill="#3b82f6"/>
+          <text x="40" y="132" dx="6" font-size="14" font-weight="600" fill="white">rebate capture &nbsp; +$1.0M</text>
+
+          <rect x="40" y="160" width="80" height="34" fill="#fecaca"/>
+          <text x="130" y="182" font-size="13" fill="#8e1a1a" font-weight="500">colo rent &nbsp; -$25k</text>
+
+          <rect x="40" y="210" width="60" height="34" fill="#fecaca"/>
+          <text x="110" y="232" font-size="13" fill="#8e1a1a" font-weight="500">tech &amp; ops &nbsp; -$50k</text>
+
+          <line x1="40" y1="270" x2="420" y2="270" stroke="var(--cardinal)" stroke-width="2"/>
+          <rect x="40" y="278" width="320" height="44" fill="#1f6feb"/>
+          <text x="40" y="306" dx="10" font-family="Playfair Display" font-size="20" font-weight="600" fill="white">net ≈ +$1.0M / day per major name</text>
+        </g>
+      </svg>
+    </div>
+  </div>
+</section>
+
+<!-- =================== HFT — RECAP =================== -->
+<section data-id="hft-punchline" class="slide-center">
+  <div class="bigtext">
+    HFT sells <em>speed.</em><br>
+    Customers pay it <em>once</em> per fill — but it earns from <em>every</em> fill.
+  </div>
+</section>
+
+<!-- =================== CITY 1.2 MID-FREQ MM — COLD OPEN =================== -->
+<section data-id="mfmm-cold">
+  <div class="city-banner">
+    <span class="city-id">1.2</span>
+    <span class="city-name">Mid-frequency market maker</span>
+    <span class="city-pos">City 2 of 5 · D1</span>
+  </div>
+  <h2>You quote MSFT at 380.10 / 380.20</h2>
+  <h3>10 minutes pass. 30 hits on the bid. 20 on the offer.</h3>
+
+  <div style="flex:1; display:grid; grid-template-columns:1fr 1fr; gap:24px; align-items:center; min-height:0;">
+    <div class="fig-area">
+      <svg viewBox="0 0 480 360">
+        <!-- price chart -->
+        <line x1="40" y1="320" x2="450" y2="320" stroke="var(--text)" stroke-width="1.5"/>
+        <line x1="40" y1="40" x2="40" y2="320" stroke="var(--text)" stroke-width="1.5"/>
+        <text x="245" y="346" text-anchor="middle" font-family="DM Sans" font-size="11" fill="var(--muted)">time (minutes)</text>
+        <text transform="translate(20,180) rotate(-90)" font-family="DM Sans" font-size="11" fill="var(--muted)" text-anchor="middle">price</text>
+
+        <!-- mid line that drifts down -->
+        <path d="M40 100 L120 110 L200 130 L280 165 L360 195 L440 225" fill="none" stroke="var(--c-d1)" stroke-width="2.5"/>
+        <text x="450" y="225" font-family="DM Sans" font-size="12" font-weight="500" fill="var(--c-d1)">mid drifts down</text>
+
+        <!-- bid hits -->
+        <g class="fragment fade-in" data-fragment-index="1">
+          <circle cx="80" cy="115" r="4" fill="#8e1a1a"/>
+          <circle cx="100" cy="120" r="4" fill="#8e1a1a"/>
+          <circle cx="160" cy="135" r="4" fill="#8e1a1a"/>
+          <circle cx="200" cy="148" r="4" fill="#8e1a1a"/>
+          <circle cx="240" cy="160" r="4" fill="#8e1a1a"/>
+          <circle cx="290" cy="178" r="4" fill="#8e1a1a"/>
+          <circle cx="330" cy="195" r="4" fill="#8e1a1a"/>
+          <circle cx="370" cy="210" r="4" fill="#8e1a1a"/>
+          <text x="180" y="100" font-size="11" fill="#8e1a1a" font-style="italic">30 bid hits → you bought 3,000 sh</text>
+        </g>
+
+        <!-- offer hits -->
+        <g class="fragment fade-in" data-fragment-index="2">
+          <circle cx="60" cy="92" r="4" fill="#1a6634"/>
+          <circle cx="130" cy="108" r="4" fill="#1a6634"/>
+          <circle cx="220" cy="135" r="4" fill="#1a6634"/>
+          <circle cx="300" cy="170" r="4" fill="#1a6634"/>
+          <circle cx="400" cy="215" r="4" fill="#1a6634"/>
+          <text x="160" y="80" font-size="11" fill="#1a6634" font-style="italic">20 offer hits → you sold 2,000 sh</text>
+        </g>
+      </svg>
+    </div>
+
+    <div>
+      <div class="callout-think">
+        <div class="think-label">Think first — pause 30 seconds</div>
+        <span style="font-style:italic;">After this 10-minute window, what is your P&amp;L? What's your hedge?</span>
+      </div>
+
+      <div class="fragment fade-in" data-fragment-index="3" style="margin-top:14px;">
+        <table style="font-size:0.86em;">
+          <thead><tr><th>option</th><th style="text-align:right;">P&amp;L</th></tr></thead>
+          <tbody>
+            <tr><td>A · "+$50, no hedge"</td><td style="text-align:right;" class="neu">spread × net = $50</td></tr>
+            <tr style="background:#fff4e6;"><td><strong>B · "−$950, sell to flatten"</strong></td><td style="text-align:right;" class="neg">drift dominates</td></tr>
+            <tr><td>C · "spread covered the move"</td><td style="text-align:right;" class="neu">wishful</td></tr>
+            <tr><td>D · "can't tell"</td><td style="text-align:right;" class="neu">false</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== MID-FREQ MM — REVEAL =================== -->
+<section data-id="mfmm-reveal">
+  <h2>Inventory drift dominates spread economics</h2>
+  <h3>The decomposition</h3>
+
+  <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:18px; min-height:0;">
+    <div class="math-box">
+      <div class="mlabel">net P&amp;L (this 10-minute window)</div>
+      <div style="font-family:var(--serif); font-size:1.05em; line-height:1.6;">
+        spread captured: 50 fills × $0.05 × 100 sh &nbsp;=&nbsp; <strong class="pos">+$250</strong><br>
+        net inventory: long 1,000 sh × $1.00 drop &nbsp;=&nbsp; <strong class="neg">−$1,000</strong><br>
+        net adverse selection on informed slice &nbsp;=&nbsp; <strong class="neg">−$200</strong>
+      </div>
+      <div class="thin-rule" style="margin:0.6em 0 0.4em;"></div>
+      <div style="font-family:var(--serif); font-size:1.2em; font-weight:600; color:var(--cardinal);">net = −$950</div>
+    </div>
+
+    <div class="callout">
+      <strong>The hedge:</strong> sell 1,000 sh at $379.95 immediately. You take the loss but stop the bleed. The kill switch is the second-order defense.
+    </div>
+
+    <div style="font-family:var(--serif); font-size:1.1em; font-style:italic; color:var(--text); border-top:1px solid var(--border); padding-top:14px;">
+      Spread is gross revenue. Net = spread − adverse selection − inventory drift − fees.
+    </div>
+  </div>
+</section>
+
+<!-- =================== ADVERSE SELECTION VISUAL =================== -->
+<section data-id="advsel">
+  <h2>Why widening the spread isn't always the answer</h2>
+  <h3>Adverse selection vs. fill rate</h3>
+
+  <div class="fig-area">
+    <svg viewBox="0 0 1100 400">
+      <!-- axes -->
+      <line x1="80" y1="350" x2="1040" y2="350" stroke="var(--text)" stroke-width="1.5"/>
+      <line x1="80" y1="40" x2="80" y2="350" stroke="var(--text)" stroke-width="1.5"/>
+      <text x="560" y="380" text-anchor="middle" font-family="DM Sans" font-size="13" fill="var(--muted)">your quoted spread (¢)</text>
+      <text transform="translate(40,195) rotate(-90)" text-anchor="middle" font-family="DM Sans" font-size="13" fill="var(--muted)">$ per day</text>
+
+      <!-- gridlines -->
+      <line x1="80" y1="195" x2="1040" y2="195" stroke="var(--border)" stroke-dasharray="3,3"/>
+      <text x="76" y="199" text-anchor="end" font-size="10" fill="var(--muted)">$0</text>
+
+      <!-- volume curve (declines) -->
+      <path d="M80 80 Q 200 95, 350 130 T 700 240 Q 850 290, 1040 330" fill="none" stroke="var(--c-d1)" stroke-width="3"/>
+      <text x="180" y="80" font-size="13" font-weight="500" fill="var(--c-d1)">volume × spread</text>
+      <text x="180" y="100" font-size="11" fill="var(--muted)">tighter quote → more fills</text>
+
+      <!-- adverse selection curve (rises then plateaus) -->
+      <path d="M80 340 Q 200 320, 350 290 T 700 230 Q 850 220, 1040 215" fill="none" stroke="var(--cardinal)" stroke-width="3"/>
+      <text x="850" y="200" font-size="13" font-weight="500" fill="var(--cardinal)">adverse selection</text>
+      <text x="850" y="218" font-size="11" fill="var(--muted)">tighter quote → toxic fills</text>
+
+      <!-- net P&L (humped) -->
+      <path d="M80 280 Q 250 200, 460 150 Q 700 220, 1040 320" fill="none" stroke="#1a6634" stroke-width="4" stroke-dasharray="6,4"/>
+      <text x="500" y="135" font-size="14" font-weight="600" fill="#1a6634">net P&amp;L</text>
+
+      <!-- optimum -->
+      <line x1="460" y1="40" x2="460" y2="350" stroke="#1a6634" stroke-dasharray="4,4" stroke-width="1.5"/>
+      <circle cx="460" cy="150" r="6" fill="#1a6634"/>
+      <text x="475" y="65" font-family="Playfair Display" font-size="14" font-weight="600" fill="#1a6634">optimal spread</text>
+      <text x="475" y="83" font-size="11" fill="var(--muted)">~8.6¢ on AAPL with 30% informed flow</text>
+    </svg>
+  </div>
+
+  <div class="callout" style="margin-top:8px;">
+    <strong>Critical formula.</strong>
+    Required spread $s$ satisfies $(1{-}p)\cdot s \geq p \cdot \mathrm{informed\ loss}$. With $p=30\%$ and informed move $=\$0.10$: $s \geq \$0.043$/side, so quoted spread $\geq \$0.086$.
+  </div>
+</section>
+
+<!-- =================== CITY 1.3 — SINGLE-STOCK ALPHA =================== -->
+<section data-id="alpha-cold">
+  <div class="city-banner">
+    <span class="city-id">1.3</span>
+    <span class="city-name">Single-stock alpha trader</span>
+    <span class="city-pos">City 3 of 5 · D1</span>
+  </div>
+  <h2>"AAPL is worth $215. It trades at $200."</h2>
+  <h3>Hardest business in District 1. Most over-claimed.</h3>
+
+  <div style="flex:1; display:grid; grid-template-columns:1fr 1fr; gap:30px; align-items:center; min-height:0;">
+    <div class="fig-area">
+      <svg viewBox="0 0 480 360">
+        <text x="240" y="20" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="700" letter-spacing="1.4" fill="var(--c-d1)">DECOMPOSING A "BUY AAPL" TRADE</text>
+        <!-- AAPL position bar -->
+        <rect x="60" y="60" width="380" height="44" rx="4" fill="#1f6feb"/>
+        <text x="250" y="88" text-anchor="middle" font-family="Playfair Display" font-size="18" font-weight="600" fill="white">long $50M AAPL</text>
+
+        <!-- decomposition -->
+        <g class="fragment fade-in" data-fragment-index="1">
+          <rect x="60" y="140" width="280" height="44" rx="4" fill="#cf222e"/>
+          <text x="200" y="168" text-anchor="middle" font-family="DM Sans" font-size="14" font-weight="500" fill="white">tech-sector beta</text>
+          <text x="450" y="168" text-anchor="end" font-family="DM Sans" font-size="13" fill="var(--text)">~73%</text>
+        </g>
+
+        <g class="fragment fade-in" data-fragment-index="2">
+          <rect x="60" y="200" width="80" height="44" rx="4" fill="#9b6fd4"/>
+          <text x="100" y="228" text-anchor="middle" font-family="DM Sans" font-size="13" font-weight="500" fill="white">size factor</text>
+          <text x="450" y="228" text-anchor="end" font-family="DM Sans" font-size="13" fill="var(--text)">~22%</text>
+        </g>
+
+        <g class="fragment fade-in" data-fragment-index="3">
+          <rect x="60" y="260" width="20" height="44" rx="4" fill="#1a6634"/>
+          <text x="160" y="288" font-family="DM Sans" font-size="13" font-weight="600" fill="#1a6634">your alpha</text>
+          <text x="450" y="288" text-anchor="end" font-family="DM Sans" font-size="13" fill="var(--text)">~5%</text>
+        </g>
+
+        <text x="240" y="340" text-anchor="middle" font-size="13" font-style="italic" fill="var(--muted)">95% of your "alpha" is hidden beta.</text>
+      </svg>
+    </div>
+
+    <div>
+      <div class="math-box">
+        <div class="mlabel">Kelly sizing under uncertainty</div>
+        <div style="font-family:var(--serif); font-size:1.0em;">$f^* = (p \cdot b - q) / b$</div>
+        <div style="font-size:0.78em; color:var(--muted); margin-top:4px;">Sharpe 0.8, 90-day → ~25% of capital. <em>Half-Kelly safer for parameter uncertainty.</em></div>
+      </div>
+
+      <div class="math-box">
+        <div class="mlabel">capacity decay</div>
+        <div style="font-family:var(--serif); font-size:1em;">a 5%/yr signal at $10M is ~1%/yr at $1B</div>
+        <div style="font-size:0.78em; color:var(--muted); margin-top:4px;">Capacity test: how much does each next $10M shrink expected alpha?</div>
+      </div>
+
+      <div class="callout-warn">
+        <strong>FINRA 5270 boundary</strong> — research desk hoot is not actionable info if you have an info barrier and act on the public news that prompted it. MS 2024 settled $249M on exactly this line.
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- =================== CITY 1.4 — ALGO EXECUTION =================== -->
+<section data-id="algo-cold">
+  <div class="city-banner">
+    <span class="city-id">1.4</span>
+    <span class="city-name">Algo execution — VWAP / IS / POV</span>
+    <span class="city-pos">City 4 of 5 · D1</span>
+  </div>
+  <h2>$100M MSFT to buy. Done by 3:30 PM. Your benchmark?</h2>
+  <h3>Each algo has a P&amp;L signature</h3>
+
+  <div class="fig-area">
+    <svg viewBox="0 0 1100 380">
+      <text x="550" y="22" text-anchor="middle" font-family="DM Sans" font-size="12" font-weight="700" letter-spacing="1.4" fill="var(--c-d1)">FOUR ALGOS · FOUR SIGNATURES</text>
+
+      <g font-family="DM Sans">
+        <!-- VWAP -->
+        <g transform="translate(40,60)">
+          <rect width="240" height="280" rx="10" fill="#f7fbf8" stroke="#bbf7d0" stroke-width="2"/>
+          <text x="120" y="34" text-anchor="middle" font-family="Playfair Display" font-size="22" font-weight="600" fill="#1a6634">VWAP</text>
+          <text x="120" y="56" text-anchor="middle" font-size="12" fill="var(--muted)">match volume curve</text>
+          <line x1="20" y1="70" x2="220" y2="70" stroke="var(--border)"/>
+          <!-- chart -->
+          <g transform="translate(20,180)">
+            <line x1="0" y1="0" x2="200" y2="0" stroke="var(--text)"/>
+            <path d="M0 -8 Q 30 -22 60 -45 Q 100 -75 140 -45 Q 170 -22 200 -8" fill="none" stroke="#1a6634" stroke-width="2.5"/>
+          </g>
+          <text x="120" y="240" text-anchor="middle" font-size="12" fill="var(--text)">benchmark: <strong>day's VWAP</strong></text>
+          <text x="120" y="262" text-anchor="middle" font-size="11" fill="var(--muted)">low tracking error</text>
+        </g>
+
+        <!-- IS -->
+        <g transform="translate(290,60)">
+          <rect width="240" height="280" rx="10" fill="#fce8e8" stroke="#fecaca" stroke-width="2"/>
+          <text x="120" y="34" text-anchor="middle" font-family="Playfair Display" font-size="22" font-weight="600" fill="var(--cardinal)">IS</text>
+          <text x="120" y="56" text-anchor="middle" font-size="12" fill="var(--muted)">aggressive early</text>
+          <line x1="20" y1="70" x2="220" y2="70" stroke="var(--border)"/>
+          <g transform="translate(20,180)">
+            <line x1="0" y1="0" x2="200" y2="0" stroke="var(--text)"/>
+            <path d="M0 -75 Q 50 -55 100 -25 Q 150 -10 200 -5" fill="none" stroke="var(--cardinal)" stroke-width="2.5"/>
+          </g>
+          <text x="120" y="240" text-anchor="middle" font-size="12" fill="var(--text)">benchmark: <strong>arrival mid</strong></text>
+          <text x="120" y="262" text-anchor="middle" font-size="11" fill="var(--muted)">signals urgency</text>
+        </g>
+
+        <!-- POV -->
+        <g transform="translate(540,60)">
+          <rect width="240" height="280" rx="10" fill="#e0f2f5" stroke="#a5f3fc" stroke-width="2"/>
+          <text x="120" y="34" text-anchor="middle" font-family="Playfair Display" font-size="22" font-weight="600" fill="var(--accent)">POV</text>
+          <text x="120" y="56" text-anchor="middle" font-size="12" fill="var(--muted)">% of live volume</text>
+          <line x1="20" y1="70" x2="220" y2="70" stroke="var(--border)"/>
+          <g transform="translate(20,180)">
+            <line x1="0" y1="0" x2="200" y2="0" stroke="var(--text)"/>
+            <path d="M0 -10 L 30 -25 L 60 -50 L 90 -25 L 120 -55 L 150 -30 L 180 -45 L 200 -15" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+          </g>
+          <text x="120" y="240" text-anchor="middle" font-size="12" fill="var(--text)">benchmark: <strong>10% of vol</strong></text>
+          <text x="120" y="262" text-anchor="middle" font-size="11" fill="var(--muted)">smooth, steady</text>
+        </g>
+
+        <!-- Liquidity-Seeking -->
+        <g transform="translate(790,60)">
+          <rect width="240" height="280" rx="10" fill="#f8f4ff" stroke="#ddd6fe" stroke-width="2"/>
+          <text x="120" y="34" text-anchor="middle" font-family="Playfair Display" font-size="22" font-weight="600" fill="#5b2d8e">LS</text>
+          <text x="120" y="56" text-anchor="middle" font-size="12" fill="var(--muted)">bias to dark/midpoint</text>
+          <line x1="20" y1="70" x2="220" y2="70" stroke="var(--border)"/>
+          <g transform="translate(20,180)">
+            <line x1="0" y1="0" x2="200" y2="0" stroke="var(--text)"/>
+            <circle cx="40" cy="-30" r="6" fill="#5b2d8e"/>
+            <circle cx="80" cy="-15" r="6" fill="#5b2d8e"/>
+            <circle cx="125" cy="-50" r="6" fill="#5b2d8e"/>
+            <circle cx="170" cy="-20" r="6" fill="#5b2d8e"/>
+          </g>
+          <text x="120" y="240" text-anchor="middle" font-size="12" fill="var(--text)">benchmark: <strong>hide the trade</strong></text>
+          <text x="120" y="262" text-anchor="middle" font-size="11" fill="var(--muted)">low signaling</text>
+        </g>
+      </g>
+    </svg>
+  </div>
+
+  <div class="callout" style="margin-top:8px;">
+    <strong>Customer's BENCHMARK determines algo choice.</strong> "What's cheapest today?" is the wrong question. "What does my fund report against?" is the right one.
+  </div>
+</section>
+
+<!-- =================== CITY 1.5 — CLOSING AUCTION =================== -->
+<section data-id="auction-cold">
+  <div class="city-banner">
+    <span class="city-id">1.5</span>
+    <span class="city-name">Closing-auction specialist</span>
+    <span class="city-pos">City 5 of 5 · D1</span>
+  </div>
+  <h2>10–15% of US equity volume prints in <em>five minutes</em></h2>
+  <h3>The closing auction at NYSE / NASDAQ</h3>
+
+  <div class="fig-area">
+    <svg viewBox="0 0 1100 380">
+      <!-- timeline -->
+      <line x1="80" y1="200" x2="1020" y2="200" stroke="var(--text)" stroke-width="2"/>
+      <text x="60" y="206" text-anchor="end" font-family="DM Sans" font-size="11" fill="var(--muted)">15:00</text>
+      <text x="1040" y="206" text-anchor="start" font-family="DM Sans" font-size="11" fill="var(--muted)">16:00</text>
+
+      <!-- volume bars throughout day -->
+      <g font-family="DM Sans">
+        <rect x="100" y="180" width="20" height="20" fill="#bfdbfe"/>
+        <rect x="180" y="170" width="20" height="30" fill="#bfdbfe"/>
+        <rect x="260" y="175" width="20" height="25" fill="#bfdbfe"/>
+        <rect x="340" y="170" width="20" height="30" fill="#bfdbfe"/>
+        <rect x="420" y="175" width="20" height="25" fill="#bfdbfe"/>
+        <rect x="500" y="160" width="20" height="40" fill="#bfdbfe"/>
+        <rect x="580" y="170" width="20" height="30" fill="#bfdbfe"/>
+        <rect x="660" y="155" width="20" height="45" fill="#bfdbfe"/>
+        <rect x="740" y="140" width="20" height="60" fill="#3b82f6"/>
+        <rect x="820" y="120" width="20" height="80" fill="#3b82f6"/>
+        <rect x="900" y="80" width="20" height="120" fill="var(--cardinal)"/>
+        <rect x="980" y="50" width="20" height="150" fill="var(--cardinal)"/>
+
+        <text x="990" y="44" text-anchor="end" font-family="Playfair Display" font-size="22" font-weight="600" fill="var(--cardinal)">CLOSE</text>
+      </g>
+
+      <!-- imbalance ribbon -->
+      <g class="fragment fade-in" data-fragment-index="1">
+        <rect x="660" y="245" width="370" height="60" rx="6" fill="#fff4e6" stroke="#f0c890"/>
+        <text x="675" y="268" font-family="DM Sans" font-size="11" font-weight="700" letter-spacing="1.4" fill="#6b3f00">NYSE NOII · publishes from 15:50</text>
+        <text x="675" y="290" font-size="13" fill="#6b3f00">"NVDA buy imbalance: 3.5M shares at $115.40 mid"</text>
+      </g>
+
+      <g class="fragment fade-in" data-fragment-index="2">
+        <text x="550" y="345" text-anchor="middle" font-family="Playfair Display" font-size="20" font-weight="600" fill="var(--text)">prediction × crowding × hedge</text>
+        <text x="550" y="368" text-anchor="middle" font-size="13" font-style="italic" fill="var(--muted)">conversion factor 0.45 historical · ≈ 0.32 today (4–5 desks running it)</text>
+      </g>
+    </svg>
+  </div>
+
+  <div class="callout-warn" style="margin-top:8px;">
+    <strong>FINRA 5270 boundary.</strong> Trading on public NOII = allowed. Trading ahead of a customer block = forbidden. The MS 2024 $249M settlement was on this line.
+  </div>
+</section>
+
+<!-- =================== CLOSING-AUCTION ECONOMICS =================== -->
+<section data-id="auction-econ">
+  <h2>The numbers — one trade, one day, one year</h2>
+  <h3>Why this desk exists</h3>
+
+  <div style="flex:1; display:flex; flex-direction:column; justify-content:center; gap:18px; min-height:0;">
+    <div style="display:grid; grid-template-columns:repeat(4, 1fr); gap:16px;">
+      <div class="bigstat"><div class="num">$92M</div><div class="label">trade size</div></div>
+      <div class="bigstat"><div class="num">3 bp</div><div class="label">expected premium</div></div>
+      <div class="bigstat"><div class="num">+$3.1k</div><div class="label">net per trade</div></div>
+      <div class="bigstat"><div class="num">$9M</div><div class="label">per desk per year</div></div>
+    </div>
+
+    <div class="thin-rule"></div>
+
+    <div class="math-box">
+      <div class="mlabel">arithmetic</div>
+      <div style="font-family:var(--serif); font-size:1em; line-height:1.6;">
+        $92M × 3 bp = $4.6k gross · QQQ hedge cost $1.5k · <strong>net $3.1k/trade</strong><br>
+        12 trades/day × 250 days = $9.3M/yr per desk
+      </div>
+    </div>
+
+    <div style="font-family:var(--serif); font-size:1.05em; font-style:italic; color:var(--text); border-top:1px solid var(--border); padding-top:14px;">
+      Same imbalance signal — 4 desks · same 30-day Sharpe history · everyone's edge keeps shrinking.
+    </div>
+  </div>
+</section>
+
+<!-- =================== TRADE ROUTES OUT =================== -->
+<section data-id="routes">
+  <h2>Five cities. Five routes leaving the district.</h2>
+  <h3>What connects to what</h3>
+
+  <div class="fig-area">
+    <svg viewBox="0 0 1100 460">
+      <!-- 5 city dots in a band -->
+      <g font-family="DM Sans">
+        <circle cx="120" cy="220" r="18" fill="#1f6feb"/>
+        <text x="120" y="225" text-anchor="middle" font-size="12" font-weight="700" fill="white">1.1</text>
+        <text x="120" y="262" text-anchor="middle" font-size="13" font-weight="500">HFT</text>
+
+        <circle cx="320" cy="220" r="18" fill="#1f6feb"/>
+        <text x="320" y="225" text-anchor="middle" font-size="12" font-weight="700" fill="white">1.2</text>
+        <text x="320" y="262" text-anchor="middle" font-size="13" font-weight="500">Mid-freq MM</text>
+
+        <circle cx="520" cy="220" r="18" fill="#1f6feb"/>
+        <text x="520" y="225" text-anchor="middle" font-size="12" font-weight="700" fill="white">1.3</text>
+        <text x="520" y="262" text-anchor="middle" font-size="13" font-weight="500">Stock alpha</text>
+
+        <circle cx="720" cy="220" r="18" fill="#1f6feb"/>
+        <text x="720" y="225" text-anchor="middle" font-size="12" font-weight="700" fill="white">1.4</text>
+        <text x="720" y="262" text-anchor="middle" font-size="13" font-weight="500">Algo execution</text>
+
+        <circle cx="920" cy="220" r="18" fill="#1f6feb"/>
+        <text x="920" y="225" text-anchor="middle" font-size="12" font-weight="700" fill="white">1.5</text>
+        <text x="920" y="262" text-anchor="middle" font-size="13" font-weight="500">Closing auction</text>
+      </g>
+
+      <!-- routes leaving -->
+      <g class="fragment fade-in" data-fragment-index="1">
+        <path d="M 320 220 Q 250 120 180 60" stroke="#9b6fd4" stroke-width="2.5" stroke-dasharray="6 4" fill="none" marker-end="url(#arrR)"/>
+        <text x="180" y="48" text-anchor="middle" font-size="12" fill="#5b2d8e" font-weight="500">→ R1 · 3.1 Vanilla options MM</text>
+        <text x="180" y="65" text-anchor="middle" font-size="10" fill="var(--muted)">delta-hedge inventory</text>
+      </g>
+
+      <g class="fragment fade-in" data-fragment-index="2">
+        <path d="M 120 220 Q 100 130 80 50" stroke="#9b6fd4" stroke-width="2.5" stroke-dasharray="6 4" fill="none" marker-end="url(#arrR)"/>
+        <text x="60" y="38" text-anchor="start" font-size="12" fill="#5b2d8e" font-weight="500">→ R4 · 2.1 Wholesaler</text>
+        <text x="60" y="55" text-anchor="start" font-size="10" fill="var(--muted)">latency competition for retail</text>
+      </g>
+
+      <g class="fragment fade-in" data-fragment-index="3">
+        <path d="M 720 220 Q 720 360 760 410" stroke="#9b6fd4" stroke-width="2.5" stroke-dasharray="6 4" fill="none" marker-end="url(#arrR)"/>
+        <text x="780" y="430" text-anchor="start" font-size="12" fill="#5b2d8e" font-weight="500">→ R12 · 9.1 ETF basket arb</text>
+        <text x="780" y="447" text-anchor="start" font-size="10" fill="var(--muted)">basket needs algo for legs</text>
+      </g>
+
+      <g class="fragment fade-in" data-fragment-index="4">
+        <path d="M 920 220 Q 1000 350 1050 410" stroke="#9b6fd4" stroke-width="2.5" stroke-dasharray="6 4" fill="none" marker-end="url(#arrR)"/>
+        <text x="1080" y="430" text-anchor="end" font-size="12" fill="#5b2d8e" font-weight="500">→ R13 · 4.3 ETF MM</text>
+        <text x="1080" y="447" text-anchor="end" font-size="10" fill="var(--muted)">ETF rebalances at the close</text>
+      </g>
+
+      <g class="fragment fade-in" data-fragment-index="5">
+        <path d="M 520 220 Q 540 130 600 50" stroke="#9b6fd4" stroke-width="2.5" stroke-dasharray="6 4" fill="none" marker-end="url(#arrR)"/>
+        <text x="600" y="38" text-anchor="start" font-size="12" fill="#5b2d8e" font-weight="500">→ R14 · 10.3 Headline trader</text>
+        <text x="600" y="55" text-anchor="start" font-size="10" fill="var(--muted)">both react to news</text>
+      </g>
+
+      <defs>
+        <marker id="arrR" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto">
+          <path d="M0,0 L10,5 L0,10 z" fill="#9b6fd4"/>
+        </marker>
+      </defs>
+    </svg>
+  </div>
+
+  <div class="note" style="text-align:center; margin-top:6px;">
+    Each route is a relationship: same desk-questions, different wrapper. <em>The map is what you trade across.</em>
+  </div>
+</section>
+
+<!-- =================== CLOSING PUNCHLINE =================== -->
+<section data-id="punchline" class="slide-center">
+  <div class="bigtext">
+    Five businesses share <em>one order book.</em><br><br>
+    They are not the same.
+  </div>
+</section>
+
+<!-- =================== END CARD =================== -->
+<section data-id="end">
+  <h2>End of District 1.</h2>
+  <h3>Where to next on the map?</h3>
+
+  <div style="flex:1; display:grid; grid-template-columns:1fr 1fr; gap:30px; align-items:center; min-height:0;">
+    <div>
+      <div class="label-sm">Suggested next stops</div>
+      <ul style="margin-top:14px; font-size:1em;">
+        <li><a href="#" style="color:var(--c-d1); text-decoration:none;"><strong>D2 · Wholesale Lowlands</strong></a> — the OTHER side of retail flow</li>
+        <li><a href="#" style="color:var(--c-d1); text-decoration:none;"><strong>D3 · Options Highlands</strong></a> — D1 cities hedge their inventory there</li>
+        <li><a href="#" style="color:var(--c-d1); text-decoration:none;"><strong>D10 · Flow Valley</strong></a> — closing-auction's parent district</li>
+      </ul>
+    </div>
+
+    <div style="text-align:center;">
+      <a href="../index.html" style="display:inline-block; padding:14px 28px; background:var(--cardinal); color:white; font-family:var(--sans); font-size:0.9em; font-weight:500; letter-spacing:1.4px; text-transform:uppercase; text-decoration:none; border-radius:6px;">↑ back to the continent</a>
+      <div style="margin-top:14px; font-size:0.8em; color:var(--muted);">62 cities total · 11 districts to go</div>
+    </div>
+  </div>
+</section>
+
+</div>
+</div>
+
+<script src="node_modules/reveal.js/dist/reveal.js"></script>
+<script>
+Reveal.initialize({
+  hash: true,
+  slideNumber: 'c/t',
+  controls: true,
+  progress: true,
+  transition: 'slide',
+  width: 1280,
+  height: 800,
+  margin: 0.04
+});
+</script>
+</body>
+</html>
