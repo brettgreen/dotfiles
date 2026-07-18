@@ -57,7 +57,7 @@ Output the draft in a code block (so the user can copy it cleanly) and then ask 
 
 ## Guidance
 
-- Write in the user's voice — measured, precise, specific. Avoid generic editorial platitudes ("interesting paper," "makes a contribution"). If the user is rejecting, the letter should clearly explain why without being harsh.
+- Write in the user's voice — read `/Users/b.green/.claude/skills/writing-style/SKILL.md` before drafting; it defines the voice and the tics to avoid. Measured, precise, specific. Avoid generic editorial platitudes ("interesting paper," "makes a contribution"). If the user is rejecting, the letter should clearly explain why without being harsh.
 - Always refer to referees as R1, R2, etc. — never by name, even if a referee signed their report or a cover letter identifies them. This applies to both the Phase 2 summaries and the final letter.
 - Never invent referee recommendations or paper results. If something is unclear in the source material, flag it to the user rather than guessing.
 - Never write the letter before Phase 3 is complete. The AE's own view is the core of the letter.

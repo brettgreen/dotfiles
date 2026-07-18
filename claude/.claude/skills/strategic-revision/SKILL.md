@@ -91,7 +91,7 @@ Output the draft in a code block (LaTeX if the exemplars/folder are LaTeX, match
 
 ## Guidance
 
-- Write in the user's voice — measured, precise, concrete; concede readily where warranted and push back substantively where not. Avoid author platitudes ("we thank the referee for this insightful comment" on repeat); vary and keep it genuine.
+- Write in the user's voice — read `/Users/b.green/.claude/skills/writing-style/SKILL.md` before drafting; it defines the voice and the tics to avoid. Measured, precise, concrete; concede readily where warranted and push back substantively where not. Avoid author platitudes ("we thank the referee for this insightful comment" on repeat); vary and keep it genuine.
 - This is the user's own paper and is **co-authored** — use "we." Refer to referees as Referee 1/R1, the editor as the editor; never speculate about identities even if a report is signed.
 - The strategy is the user's to set. Phase 3 recommendations are advice; the user decides. Never quietly comply with a point the user wanted to contest, or vice versa.
 - Be exhaustive about points — every referee/editor item gets a response in the letter, including minor ones. A dropped point reads as evasion.
