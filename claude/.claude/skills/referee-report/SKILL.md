@@ -1,167 +1,73 @@
 ---
 name: referee-report
-description: Draft a referee report and editor letter for an academic paper. Use when the user asks to write, draft, or help with a referee report, review, or editor letter.
-allowed-tools: Read Bash(pdflatex *) Bash(bibtex *) Bash(latexmk *) Bash(open *)
+description: Draft a referee report on an academic finance manuscript, synthesizing the user's structured assessment of the paper into a report that matches the tone and structure of their prior reports. Use when the user wants to process a refereeing assignment (paper + editor's invitation) and produce a draft referee report. The user referees regularly for top finance journals.
 ---
 
 # Referee Report Skill
 
-Draft a referee report and editor letter in the user's voice and style. The user will provide the paper (PDF or description). Output LaTeX files for both the report and editor letter.
+Help the user draft a referee report on a manuscript they've been asked to review. Work through the phases below in order. Do not skip phases or produce the draft report before collecting the user's structured assessment — the report is the user's view of the paper, not a generic summary.
 
-## Voice and Tone
+## Phase 1 — Locate the package
 
-- **Direct, intellectually honest, and respectful but unhedged.** Do not soften punches with excessive hedging.
-- **First person freely:** "I think," "I am skeptical," "It seems to me that," "I would like to be convinced that," "I did not understand."
-- **Genuine but brief praise** when warranted: "This is an elegant and well-written paper on an important topic." Do not over-praise.
-- **Frank critiques:** State concerns plainly. "My main issue with the paper is that..." "I do not believe that..."
-- **Constructive framing:** Even negative reports should include concrete suggestions. Propose specific paths forward: "In an ideal revision, the author would: (i)... (ii)... (iii)..."
-- **Rhetorical questions** to push the author's thinking: "Is that correct?" "Are you arguing to the contrary?"
-- **Parenthetical asides** to qualify or pre-empt: "(though I do not believe that it is)"
-- **Honest about uncertainty:** "I must admit that I did not follow..." "My impression is that..."
+1. The user should provide a folder path as the argument. If no path was given, ask for one.
+2. List the files in the folder. Identify:
+   - The manuscript (usually the largest PDF; may be named `paper.pdf`, `manuscript.pdf`, or similar)
+   - The editor's invitation / cover letter, if present (e.g. `invitation.pdf`, `editor_letter.pdf`)
+   - Any online appendix, supplementary materials, or prior-round materials (author response, prior referee reports if this is an R&R)
+3. Ask the user which **journal** the report is for (this drives both tone-matching and archive lookup). Common targets: Journal of Finance (JF), Review of Financial Studies (RFS), Journal of Financial Economics (JFE).
+4. Ask the user whether this is a **first-round** report or an **R&R** (revise-and-resubmit). If R&R, ask for the path to the prior-round report the user wrote — the new report should reference how the authors addressed prior concerns.
+5. If any file's role is ambiguous, confirm with the user before proceeding.
+6. Read **prior referee reports by the user** to model tone and structure:
+   - Default archive path: `/Users/b.green/Library/CloudStorage/Dropbox/Professional/Referee Reports`
+   - Look for a journal-specific subfolder matching the target journal. If not found, list what's there and ask the user where to look.
+   - Sample 2–3 recent reports (or ask the user which are most representative). Note: salutation style, section ordering (e.g. summary → major comments → minor comments, or comments-to-editor vs. comments-to-authors), length, level of formality, how the recommendation is communicated, sign-off.
+   - If the archive is empty or missing, ask the user for an alternate path or for a single example report to model.
 
-## Report Structure
+## Phase 2 — Read and summarize
 
-Use this structure with `\section*{}` headers (always unnumbered):
+1. Read the manuscript. For long papers, prioritize: abstract, introduction, hypothesis development, data/methodology section, main results tables, robustness section, conclusion. Skim technical appendices unless the paper is primarily theoretical.
+2. If this is an R&R: read the author response and the user's prior report carefully — the report will need to assess whether prior concerns were adequately addressed.
+3. Produce, in a single message to the user:
+   - **Paper summary** (≈200–300 words): research question, data, methodology, main findings, claimed contribution, where it sits in the literature.
+   - **Initial observations** (bulleted, ≈5–10 bullets): things that stood out on reading — strengths, potential concerns, identification issues, framing issues, robustness questions. Frame as observations to discuss with the user, not conclusions.
+   - If R&R: **Response assessment** (≈100 words): which prior concerns the authors addressed convincingly, which remain open.
+4. Ask the user to confirm the summary is accurate and to react to the initial observations before proceeding. Correct if needed.
 
-1. **Summary** — A concise, technically precise paragraph (5-15 lines). Describe the economic setting/framework, the key friction or mechanism, and the main formal results. Use the paper's own notation and reference specific propositions. Neutral and descriptive — do not editorialize here.
+## Phase 3 — Collect the user's structured assessment
 
-2. **Overall Assessment** — 1-2 paragraphs giving the referee's frank overall take. Signal the recommendation direction. This is where opinions belong.
+Use the AskUserQuestion tool (or plain questions if unavailable) to ask these in sequence. Do **not** bundle them into one prompt. Wait for each answer before the next.
 
-3. **Major Comments** — Numbered list of substantive concerns, ordered by importance. Each comment should:
-   - Identify the issue clearly
-   - Explain *why it matters* for the paper's contribution
-   - State what would satisfy the concern (a concrete ask)
-   - Flag whether it is a "must fix" or "would strengthen"
+1. **Contribution**: How significant and novel is the paper's contribution? Is it the kind of contribution the target journal publishes?
+2. **Identification / methodology**: Is the empirical strategy convincing? What are the most important threats to identification or interpretation? (For theory papers: are the model setup, assumptions, and proofs sound? Are the results genuinely surprising or mechanical?)
+3. **Robustness and data**: Concerns about sample construction, variable measurement, robustness, or external validity?
+4. **Framing and positioning**: Is the paper well-positioned in the literature? Any over-claiming or under-claiming? Missing relevant prior work?
+5. **Major comments**: What are the 3–6 major comments you want to raise? State them in the order of importance. For each, indicate whether it's addressable in revision or a deeper concern.
+6. **Minor comments**: Any minor issues — exposition, table formatting, missing references, typos worth flagging? (Open-ended; user can list freely or say none.)
+7. **Recommendation**: What recommendation are you making? (Reject, Reject with encouragement to resubmit, Major Revision, Minor Revision, Accept.) Ask the user to state this verbatim.
+8. **Comments to editor (confidential)**: Anything to convey to the editor that should not go to the authors? (Conflicts, candor about the recommendation, suggestions about co-referees or process, etc.) Open-ended; user can say none.
 
-4. **Minor Comments** — Separate section for smaller points: notation issues, typos, missing references, expositional suggestions. Use itemize or enumerate.
+## Phase 4 — Draft the report
 
-## Editor Letter Structure (Referee)
+Draft the report matching the tone, length, and structure of the example reports. Default structure if the examples are silent on ordering:
 
-Separate file. Structure:
-1. Open with the recommendation directly in the first sentence: "My recommendation is that the paper be rejected / receive a revise and resubmit / be accepted."
-2. 1-3 paragraphs of substantive justification summarizing the key concern(s). Do not duplicate the full report — keep it high-level.
-3. Close with: "My report contains a number of suggestions for the authors that I hope will be useful in revising the paper. Please let me know if I can be of further assistance in the editorial process."
-4. Sign off: "Sincerely," followed by signature block.
+1. **Confidential comments to the editor** (separate block at the top, clearly labeled — only if the user provided content for question 8, or if the journal's format expects it; otherwise omit).
+2. **Comments to the authors**:
+   - Brief paper summary (~100–150 words) — shows the authors the referee understood the paper. Tighter than Phase 2.
+   - Overall assessment paragraph — high-level reaction, conveying the recommendation's direction without stating it explicitly (the recommendation goes to the editor, not the authors).
+   - Major comments — numbered, in the order the user prioritized them in Phase 3. Each should be substantive: state the concern, why it matters, and (where appropriate) what would address it. Avoid vague gestures like "this could be better motivated."
+   - Minor comments — numbered or bulleted, brief.
+   - For R&R: integrate assessment of how prior concerns were addressed into the relevant major comments rather than as a separate section, unless the user's prior reports do otherwise.
+3. Sign-off matching the example reports (often no signature — referee reports are typically anonymous).
 
-## AE Recommendation Letter Structure
+Output the draft in a code block (so the user can copy it cleanly) and then ask the user what to revise. Iterate until the user is satisfied.
 
-When the user is acting as Associate Editor (not referee), draft an AE recommendation letter instead. Structure:
+## Guidance
 
-1. **Open with the recommendation** directly in the first sentence.
-2. **Brief summary of the paper** — 2-4 sentences on the question, approach, and main results. Concise and neutral.
-3. **Main issues with the paper** — Organize by issue, not by referee. Write in active voice stating the AE's own view on each concern. Reference referees by number (e.g., "R1," "both referees") where it adds weight, but never by name -- the AE letter should not reveal referee identities. The goal is a coherent assessment in the AE's voice, not a book report on the referee reports.
-5. **Closing** — A sentence or two wrapping up. For rejections, be direct but not harsh. For R&Rs, highlight the most critical issues for revision.
-6. **Sign off.**
-
-## Best Practice Reminders
-
-Apply these when drafting:
-- **Separate major from minor explicitly** — always use distinct sections, never mix them in one list.
-- **State the "so what"** — for each major comment, explain how it affects the paper's contribution. "If this assumption is relaxed, I suspect the main result no longer holds because..."
-- **End every major comment with a concrete ask** — what specifically should the author do?
-- **Flag "must fix" vs. "would strengthen"** — helps the editor set revision expectations.
-- **Keep the letter lean** — recommendation + one-paragraph justification. Let the report do the heavy lifting.
-- **A useful test for theory papers:** "Consider whether a similar result would obtain in a simpler model."
-
-## LaTeX Formatting
-
-Use the user's existing templates and conventions:
-
-**Report:**
-```latex
-\documentclass[12pt]{article}
-\input{../report_style.tex}
-
-\begin{document}
-\begin{spacing}{1.25}
-\begin{center}
-{\Large Paper Title}
-
-\medskip
-{\large \textit{Journal Name} referee report}
-\medskip
-
-\today
-\end{center}
-
-\section*{Summary}
-...
-
-\section*{Overall Assessment}
-...
-
-\section*{Major Comments}
-\be
-\item ...
-\item ...
-\ee
-
-\section*{Minor Comments}
-\bi
-\item ...
-\ei
-
-\end{spacing}
-\end{document}
-```
-
-**Editor letter:**
-```latex
-\documentclass[12pt]{letter}
-\usepackage{setspace}
-\usepackage{amsmath}
-\usepackage{amssymb}
-\usepackage[colorlinks, citecolor=blue]{hyperref}
-\usepackage{url}
-\usepackage[margin=1in]{geometry}
-\begin{document}
-
-\setcounter{page}{1}
-
-\vspace{10pt}
-\hfill\today
-
-\vspace{.25in}
-\noindent Dear Professor [Editor Name],
-
-\vspace{.25in}
-\begin{spacing}{1.125}
-
-My recommendation is that the paper be [rejected / revised and resubmitted / accepted].
-
-[1-3 paragraphs of justification]
-
-My report contains a number of suggestions for the authors that I hope will be useful in revising the paper. Please let me know if I can be of further assistance in the editorial process.
-
-\vspace{1cm}
-\noindent Sincerely,
-
-\bigskip
-\includegraphics[width=0.75in,angle=90]{../../sig2.pdf} \\[6pt]
-{\textsc{Brett Green} \\ \textsc{Associate Professor of Finance} \\ \textsc{Olin Business School} \\ \textsc{Washington University in St. Louis}}
-
-\end{spacing}
-\end{document}
-```
-
-**Macros available from `report_style.tex`:**
-- `\bi` / `\ei` — `\begin{itemize}` / `\end{itemize}`
-- `\be` / `\ee` — `\begin{enumerate}` / `\end{enumerate}`
-
-## Editor Letter Format Options
-
-The editor letter can be produced in either LaTeX (PDF) or plain text, depending on the user's preference. Ask the user which format they prefer during the workflow.
-
-- **LaTeX (PDF):** Use when the recommendation involves mathematical notation, references to equations, or the user wants a formal signed PDF. Use the LaTeX template above.
-- **Plain text:** Use when the letter is straightforward prose with no math. Output a `.txt` file with the same structure (recommendation, justification, closing, signature block) but no LaTeX markup.
-
-## Workflow
-
-1. Read the paper carefully (the user will provide it).
-2. Ask the user for: journal name, editor name, any initial reactions or concerns they want emphasized, and whether the editor letter should be in LaTeX (PDF) or plain text.
-3. Draft the report LaTeX file.
-4. Draft the editor letter in the chosen format (LaTeX or plain text).
-5. Compile the report (and editor letter if LaTeX) with `pdflatex` and open for review.
-6. Iterate based on feedback.
-
-For **R2+ revision reports**, keep it short — focus only on whether previous concerns were adequately addressed and any new issues that arose.
+- Write in the user's voice — read `/Users/b.green/.claude/skills/writing-style/SKILL.md` before drafting; it defines the voice and the tics to avoid. Measured, precise, specific. Avoid generic referee platitudes ("interesting paper," "the authors should clarify"). Each major comment should be sharp enough that the authors know exactly what's being asked.
+- Never address the authors by name or speculate about their identity. Refer to the paper or "the authors" in the third person.
+- The recommendation (accept/reject/revise) goes only in the comments to the editor, not in the comments to the authors. The authors learn the recommendation from the editor's decision letter.
+- Be candid but professional. If the paper has a fatal flaw, the report should make it clear without being dismissive. If the paper is strong, the report should still raise the genuine concerns worth addressing.
+- Never invent results or claims that aren't in the paper. If something is unclear, that is itself a comment worth raising (e.g. "It is not clear from the text whether X or Y is intended").
+- Never write the report before Phase 3 is complete. The user's assessment is the substance of the report; Phase 2 is just shared understanding of the paper.
+- Do not save any of the paper content, the user's assessment, or the draft report to auto-memory — this is confidential peer-review material.
+- If the assignment is for a journal where the user has written reports archived under a different name (e.g. AE letters vs. referee reports), tone-match the referee reports, not the AE letters — the genres differ.
