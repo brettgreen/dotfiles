@@ -28,8 +28,8 @@ Work through the phases in order. Produce the **strategy memo (Phase 3) first** 
    - `Dropbox/Research/Published/inforeputation/JFE_version_2/RefereeResponseJFE2014_0305.tex` (JFE, theory)
    - `Dropbox/Research/Published/Streakiness_shared/Management Science revision/response_to_reviewers.tex` (Mgmt Sci, empirical; AE + referee)
    - `Dropbox/Research/Daley_Green/Lemons/Econometrica_Revision{1,2}_submission/response_letter.pdf` (Econometrica, theory)
-   - `Dropbox/Research/Daley_Green/Bargaining/AER_Revision/Response_Letter.pdf` (AER, theory)
    - `Dropbox/Research/PayJoy/ReStud Response/Responses_PAYGo.tex` (REStud, empirical)
+   - Do **not** use `Daley_Green/Bargaining/AER_Revision/Response_Letter.pdf` as a voice model — the user keeps it for records only. The AERI-2026-0187 letter in `Git/Deposit Draft/Revision/` reflects the tone the user wants.
    - (Base path: `/Users/b.green/Library/CloudStorage/Dropbox/`)
    - If the current paper has a prior-round response in its own folder, prefer that as the primary voice model. If none of the exemplars are readable, ask the user to point at one.
    - Note: salutation, the up-front **Main Changes** block, comment-labeling scheme (M./E./R1.S/R1.), how comments are quoted (italic verbatim vs. paraphrased "for parsimony"), how pushback is phrased, sign-off.
