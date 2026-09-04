@@ -57,7 +57,10 @@ ultimately deleted in favor of a definition, the best outcome of all.)
    structure", "clone point". Either define the term where the paper defines
    terms, or spell the condition out ("configurations with
    $P_c(U)\geq p(U)-1$"). Use only the paper's defined vocabulary (replacement,
-   re-training, transition, chain, block, support, completion).
+   re-training, transition, chain, block, completion; "support" was retired
+   2026-09-04 — a support is a block at terminal cost $w(q)$, so say block).
+   Rejected coinages from the 2026-09-04 audit: "cheapest completion",
+   "cheapest support", "rung ordering propagates", "in mirror image".
 
 4. **Rhythmic parallelism and tricolons.** "once optimal, stays optimal at
    higher knowledge, and standing alone, once optimal, stays optimal at lower
@@ -109,7 +112,12 @@ ultimately deleted in favor of a definition, the best outcome of all.)
    *the winner* (say "the optimal configuration"; a locally defined term like
    "frontier winner" is still worse than the plain name), possessive noun
    framings ("Its margin is $s-s_h=\dots$" → "For this configuration,
-   $s-s_h=\dots$"). The neutral verbs are: is,
+   $s-s_h=\dots$"). Three more words banned 2026-09-04: *margin* as a frame
+   ("with margin at least 1" → state the inequality, "$s-s_h\geq1$"),
+   *crossing* as a noun ("the crossing $\kappa_a$" → "let $\kappa_a$ solve
+   $p_a(\kappa_a)=p^H$"), and *coefficient* ("the coefficients are
+   $h(1-x)<1$" → write the two objectives with $h(1-x)$ and $1$ inline).
+   The neutral verbs are: is,
    gives, attains, satisfies, implies, follows, minimizes, maximizes, exceeds.
    If a sentence needs a vivid verb to be clear, the sentence is doing
    explanation that belongs in the main text.
@@ -145,14 +153,50 @@ coda — the operative steps only.
 - **No roadmap sentences** at proof openings ("We parametrize each
   equilibrium condition by..."), no restated hypotheses as headers
   ("Part (i): a qualified AI"), no insurance codas covering cases outside
-  the stated hypothesis.
+  the stated hypothesis. Exception (Brett, 2026-09-04): one roadmap
+  sentence is fine before a long multi-step proof ("We establish three
+  facts about $\mathcal{C}(U)$" before Theorem 1's enumerate).
 - **Do not promote a defined scalar to a function silently.** If the
-  preliminaries define "the crossing $\kappa_a$" at fixed parameters,
-  writing "$\kappa_{a'}(q^A)$ are continuous functions" uses notation never
-  introduced; say "each crossing $\kappa_{a'}$ is continuous in $q^A$".
+  preliminaries define $\kappa_a$ at fixed parameters, writing
+  "$\kappa_{a'}(q^A)$ are continuous functions" uses notation never
+  introduced; say "each $\kappa_{a'}$ is continuous in $q^A$".
 - **Before wording a passage, state to yourself what it claims** in two or
   three numbered steps; if that cannot be done, the passage is explanation,
   not proof, and should be cut or moved to the text.
+
+## Rulings from the 2026-09-04 appendix audit (Brett)
+
+- **Semicolons.** Not all must go. Keep one where it is useful; the test is
+  whether the second clause is a necessary step of the proof. Cut second
+  clauses that gloss the first ("...; a fall in $r$ changes only the mix"),
+  re-derive it ("with equality only at $r=\rho^*$; for $r<\rho^*$,
+  monotonicity gives..."), or prove something nothing later uses
+  ("; conversely, every such distribution satisfies (i)--(iv)").
+- **Do not restate what the Preliminaries establish.** "Their rungs above
+  any layer form chains attaining the chain value there, and $V(q_L)=q_L$"
+  inside a proof is extra prose once the Preliminaries say it; cite or omit.
+- **Statements carry only what the claim uses.** "Let two optimal chains
+  have rungs $q_l$ and $q'_l$ above the bases $q_0$ and $q'_0$. If
+  $q_{l-1}<q'_{l-1}$, then $q_l\leq q'_l$" → drop the bases; nothing about
+  them is used.
+- **A proof inside a statement belongs in a proof environment**, and that
+  proof gives the minimal argument without repeating the statement (Fact
+  A.1: "$\phi'(q)=q\,z''(q)>0$, and for $q>\tfrac12$, ... $\to\infty$").
+- **Symbols.** Check every letter against the paper's symbol table before
+  use. Never $r$ for a ladder or its rungs ($r\equiv\kappa/(fq^A)$ in
+  Section 6); the second ladder is $q'$, generic rungs are $q_1<\dots<q_j$;
+  a dummy index must not reuse a named depth ($\min_{a\geq0}B_a$ while $a$
+  is the block's depth → $\min_{i\geq0}B_i$). Name affine-family members
+  by their rungs, $A(x;q_1,\dots,q_j)$, rather than by a tuple letter that
+  collides with a paper object.
+- **Minimal edits to the existing draft.** When a new result fits an
+  existing lemma, add it as a new part (A.3(ii)) rather than a new lemma;
+  when a step is already proven elsewhere, cite the part (A.1(ii)–(iv))
+  rather than re-prove it. Before drafting, list the steps and grep the
+  appendix for where each is already established.
+- **Plain English.** When asked to "stick to plain English", every
+  sentence has a defined object or "we" as subject and one of the neutral
+  verbs; no "in mirror image", no "the argument runs", no "picture".
 
 ## Workflow
 
