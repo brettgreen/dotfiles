@@ -194,6 +194,14 @@ coda — the operative steps only.
   when a step is already proven elsewhere, cite the part (A.1(ii)–(iv))
   rather than re-prove it. Before drafting, list the steps and grep the
   appendix for where each is already established.
+- **Two-claim lemmas need no (i)/(ii).** State them as two plain sentences
+  and open the proof paragraphs "For the first statement, ..." / "For the
+  second statement, ..."; drop a bare "Fix $U>0$." when $U$ is already the
+  standing utility (Lemma A.3, 2026-09-04). Enumerate only when a later
+  citation needs a part label.
+- **No bare "top"/"tops"/"bottom" as nouns for rungs** ("$q_j$ and $q'_j$
+  are the tops", "is its top"). Say "top rung", "bottom rung", "top layer",
+  "bottom worker" — the paper's terms (Brett, 2026-09-04).
 - **Plain English.** When asked to "stick to plain English", every
   sentence has a defined object or "we" as subject and one of the neutral
   verbs; no "in mirror image", no "the argument runs", no "picture".
